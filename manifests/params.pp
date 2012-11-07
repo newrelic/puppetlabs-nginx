@@ -28,7 +28,8 @@ class nginx::params {
 
   $nx_proxy_redirect          = off
   $nx_proxy_set_header        = [
-    'Host $host', 'X-Real-IP $remote_addr',
+    'Host $host',
+    'X-Real-IP $remote_addr',
     'X-Forwarded-For $proxy_add_x_forwarded_for',
   ]
 
@@ -40,6 +41,7 @@ class nginx::params {
   $nx_proxy_send_timeout      = '90'
   $nx_proxy_read_timeout      = '90'
   $nx_proxy_buffers           = '32 4k'
+  $nx_proxy_intercept_errors  = 'off'
 
   $nx_logdir = $::kernel ? {
     /(?i-mx:linux)/ => '/var/log/nginx',
