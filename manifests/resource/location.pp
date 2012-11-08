@@ -3,18 +3,19 @@
 # This definition creates a new location entry within a virtual host
 #
 # Parameters:
-#   [*ensure*]      - Enables or disables the specified location (present|absent)
-#   [*vhost*]       - Defines the default vHost for this location entry to include with
-#   [*location*]    - Specifies the URI associated with this location entry
-#   [*www_root*]    - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
-#   [*index_files*] - Default index files for NGINX to read when traversing a directory
-#   [*proxy*]       - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
-#                     with nginx::resource::upstream
-#   [*proxy_read_timeout*] - Override the default the proxy read timeout value of 90 seconds
+#   [*ensure*]                 - Enables or disables the specified location (present|absent)
+#   [*vhost*]                  - Defines the default vHost for this location entry to include with
+#   [*location*]               - Specifies the URI associated with this location entry
+#   [*www_root*]               - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
+#   [*index_files*]            - Default index files for NGINX to read when traversing a directory
+#   [*proxy*]                  - Proxy server(s) for a location to connect to. Accepts a single value, can be used in conjunction
+#                                with nginx::resource::upstream
+#   [*proxy_read_timeout*]     - Override the default the proxy read timeout value of 90 seconds
 #   [*proxy_intercept_errors*] - Override the default proxy error interception value of off
-#   [*ssl*]         - Indicates whether to setup SSL bindings for this location.
-#   [*try_files*]   - An array of file locations to try
-#   [*option*]      - Reserved for future use
+#   [*ssl*]                    - Indicates whether to setup SSL bindings for this location.
+#   [*try_files*]              - An array of file locations to try
+#   [*option*]                 - Reserved for future use
+#   [*ssi]                     - Enables or disables service side includes (on|off)
 #
 # Actions:
 #
@@ -39,6 +40,7 @@ define nginx::resource::location(
   $ssl                    = false,
   $try_files              = undef,
   $option                 = undef,
+  $ssi                    = $nginx::params::nx_ssi,
 ) {
   File {
     owner  => 'root',
