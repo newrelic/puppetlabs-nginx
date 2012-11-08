@@ -37,7 +37,7 @@
 #  }
 define nginx::resource::vhost(
   $server_name        = $name,
-  $server_aliases     = { },
+  $server_aliases     = [ ],
   $ensure             = 'enable',
   $listen_ip          = '*',
   $listen_port        = '80',
