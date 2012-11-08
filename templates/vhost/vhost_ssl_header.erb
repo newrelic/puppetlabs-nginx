@@ -4,7 +4,7 @@ server {
 <% if @ssi == 'on' -%>
   ssi on
 <% end -%>
-  server_name  <%= server_name %>;
+  server_name <%= server_name %><% @server_aliases.each do |alias| -%> <%= alias %><% end -%>;
 
   ssl on;
   ssl_certificate      <%= ssl_cert %>;

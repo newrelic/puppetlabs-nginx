@@ -5,5 +5,5 @@ server {
 <% if @ssi == 'on' -%>
   ssi on
 <% end -%>
-  server_name <%= server_name %>;
+  server_name <%= server_name %><% @server_aliases.each do |alias| -%> <%= alias %><% end -%>;
   access_log  <%= scope.lookupvar('nginx::params::nx_logdir')%>/<%= name %>.access.log;
