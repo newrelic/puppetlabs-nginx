@@ -5,6 +5,7 @@
 # Parameters:
 #   [*ensure*]                 - Enables or disables the specified location (present|absent)
 #   [*vhost*]                  - Defines the default vHost for this location entry to include with
+#   [*rewrite*]                - Specifies rewrite rules for location definition. Hash should contain 'regex' and 'replacement' keys (required) and could contain a 'flag' key (optional)
 #   [*location*]               - Specifies the URI associated with this location entry
 #   [*www_root*]               - Specifies the location on disk for files to be read from. Cannot be set in conjunction with $proxy
 #   [*index_files*]            - Default index files for NGINX to read when traversing a directory
@@ -32,6 +33,7 @@ define nginx::resource::location(
   $location,
   $ensure                 = present,
   $vhost                  = undef,
+  $rewrite                = { },
   $www_root               = undef,
   $index_files            = ['index.html', 'index.htm', 'index.php'],
   $proxy                  = undef,
@@ -42,6 +44,8 @@ define nginx::resource::location(
   $option                 = undef,
   $ssi                    = $nginx::params::nx_ssi,
 ) {
+  include nginx::config
+
   File {
     owner  => 'root',
     group  => 'root',
@@ -77,6 +81,18 @@ define nginx::resource::location(
   file {"${nginx::config::nx_temp_dir}/nginx.d/${vhost}-500-${name}":
     ensure  => $ensure_real,
     content => $content_real,
+  }
+
+  if $rewrite != {} {
+    # Template uses: $rewrite
+    file { "${nginx::config::nx_temp_dir}/nginx.d/${vhost}-600-${name}":
+      ensure => $ensure ? {
+        'absent' => 'absent',
+        default  => 'file',
+      },
+      content => template('nginx/vhost/vhost_location_rewrite.erb'),
+      notify  => Class['nginx::service'],
+    }
   }
 
   ## Only create SSL Specific locations if $ssl is true.
