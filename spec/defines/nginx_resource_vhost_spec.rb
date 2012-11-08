@@ -35,11 +35,11 @@ describe 'nginx::resource::vhost', :type => :define do
         'rewrite'  => {
           'change /user to /users' => {
             'regex'       => '^/user/(.*)$',
-            'replacement' => '/users/$1?',
+            'replacement' => '/users/$ 1?',
           },
           'change /users to /show?user=' => {
             'regex'       => '^/users/(.*)$',
-            'replacement' => '/show?user=$1?',
+            'replacement' => '/show?user=$ 1?',
             'flag'        => 'last',
           },
         },
@@ -52,8 +52,8 @@ describe 'nginx::resource::vhost', :type => :define do
 
     it 'should have rewrite rules' do
       should contain_file('/tmp/nginx.d/test.local-010').with_content(
-        "  ^/user/(.*)$ /users/$1? # change /user to /users\n" +
-        "  ^/users/(.*)$ /show?user=$1? last # change /users to /show?user=\n"
+        "  rewrite ^/user/(.*)$ /users/$ 1?; # change /user to /users\n" +
+        "  rewrite ^/users/(.*)$ /show?user=$ 1? last; # change /users to /show?user=\n"
       )
     end
   end

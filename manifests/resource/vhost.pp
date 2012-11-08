@@ -52,7 +52,7 @@ define nginx::resource::vhost(
   $index_files        = ['index.html', 'index.htm', 'index.php'],
   $rewrite            = {},
   $www_root           = undef,
-  $try_files          = undef
+  $try_files          = undef,
   $ssi                = $nginx::params::nx_ssi,
 ) {
   include nginx::config
