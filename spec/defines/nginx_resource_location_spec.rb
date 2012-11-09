@@ -42,6 +42,26 @@ describe 'nginx::resource::location', :type => :define do
     end
   end
 
+  context "return usage" do
+    let(:title) { 'test.local-ret' }
+
+    let(:params) {
+      {
+        'vhost'      => 'test.local',
+        'location'   => '/status',
+        'return_str' => '204',
+      }
+    }
+
+    it 'should compile' do
+      should contain_file('/tmp/nginx.d/test.local-500-test.local-ret').with_content(
+        "  location /status {\n" +
+        "    return 204;\n" +
+        "  }\n"
+      )
+    end
+  end
+
   context "rewrite usage" do
     let(:title) { 'test.local-user' }
 
